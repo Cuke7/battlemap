@@ -1,0 +1,11 @@
+html {
+  overscroll-behavior: contain;
+}
+
+.v-main {
+  background-color: white;
+}
+.v-card {
+  background-image: url("/background.jpg");
+  background-repeat: repeat;
+}
