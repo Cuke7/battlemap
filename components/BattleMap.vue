@@ -22,11 +22,7 @@ const Konva = require("konva/cmj").default;
 
 export default {
   data: () => ({
-    configKonva: {
-      width: 200,
-      height: 200,
-      draggable: true,
-    },
+    draggable: true,
     // Pinch zoom
     lastCenter: null,
     lastDist: 0,
@@ -36,11 +32,16 @@ export default {
   mounted() {
     this.$nextTick(function () {
       Konva.hitOnDragEnabled = true;
-      this.configKonva.width = window.innerWidth - 100;
-      this.configKonva.height = window.innerHeight - 56 - 32 - 20 - 40;
     });
   },
   computed: {
+    configKonva() {
+      return {
+        width: this.$store.state.width,
+        height: this.$store.state.height,
+        draggable: this.draggable,
+      };
+    },
     tokenList() {
       return this.$store.state.tokens;
     },
@@ -95,7 +96,7 @@ export default {
         // if the stage was under Konva's drag&drop
         // we need to stop it, and implement our own pan logic with two pointers
 
-        this.configKonva.draggable = false;
+        this.draggable = false;
 
         var p1 = {
           x: touch1.clientX,
@@ -148,7 +149,7 @@ export default {
     touchend() {
       this.lastDist = 0;
       this.lastCenter = null;
-      this.configKonva.draggable = true;
+      this.draggable = true;
     },
   },
 };

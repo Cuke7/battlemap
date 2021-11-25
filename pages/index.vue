@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-app-bar app color="primary" class="rounded-b-xl">
+    <v-app-bar app color="primary">
       <v-toolbar-title class="white--text">🛡️ Battle map ⚔️</v-toolbar-title>
       <v-spacer />
       <AddTokenModal></AddTokenModal>
     </v-app-bar>
     <v-row justify="center" align="center">
       <v-col cols="auto" class="pa-0 ma-0">
-        <v-card elevation="12" class="mt-12" ref="canvasCard">
+        <v-card elevation="12" class="mt-3" ref="canvasCard">
           <BattleMap></BattleMap>
         </v-card>
       </v-col>
@@ -26,7 +26,7 @@ export default {
   }),
   computed: {
     width() {
-      return window.innerWidth - 100;
+      return this.$store.state.width;
     },
   },
   mounted() {
@@ -34,6 +34,17 @@ export default {
       // this.insertToken("/monster1.jpg", 50, 100);
       this.insertToken("/monster2.png", 200, 100);
       this.insertBackground("/background.png", 0, 0);
+      if (this.$vuetify.breakpoint.name == "xs") {
+        this.$store.commit("setDimensions", {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      } else {
+        this.$store.commit("setDimensions", {
+          width: window.innerWidth - 100,
+          height: window.innerHeight - 150,
+        });
+      }
     });
   },
   methods: {

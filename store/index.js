@@ -1,6 +1,8 @@
 export const state = () => ({
   tokens: [],
   background: null,
+  width: 100,
+  height: 100,
 });
 
 export const mutations = {
@@ -9,5 +11,9 @@ export const mutations = {
   },
   addBackground(state, background) {
     state.background = background;
+  },
+  setDimensions(state, dimensions) {
+    state.width = dimensions.width;
+    state.height = dimensions.height;
   },
 };
