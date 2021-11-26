@@ -18,7 +18,9 @@ export default {
           ctx.arc(
             this.data.config.x + this.data.config.width / 2,
             this.data.config.y + this.data.config.height / 2,
-            50,
+            this.data.config.width < this.data.config.height
+              ? this.data.config.width / 2
+              : this.data.config.height / 2,
             0,
             Math.PI * 2,
             true

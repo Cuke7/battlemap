@@ -87,12 +87,15 @@ export default {
       let ratio = width / height;
       let newWidth;
       let newHeight;
+
+      let number = this.$store.state.width * this.$store.state.tokenScale;
+
       if (ratio < 1) {
-        newHeight = 100 / ratio;
-        newWidth = 100;
+        newHeight = number / ratio;
+        newWidth = number;
       } else {
-        newHeight = 100;
-        newWidth = 100 * ratio;
+        newHeight = number;
+        newWidth = number * ratio;
       }
 
       let newToken = {
@@ -105,6 +108,8 @@ export default {
             width: newWidth,
             height: newHeight,
           },
+          defaultWidth: newWidth,
+          defaultHeight: newHeight,
           rounded: this.rounded,
         },
       };

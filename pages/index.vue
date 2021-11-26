@@ -5,6 +5,17 @@
       <v-spacer />
       <AddTokenModal></AddTokenModal>
     </v-app-bar>
+    <v-row justify="center" class="mt-12" v-if="!mobile">
+      <v-col cols="4">
+        <v-slider
+          v-model="tokenScale"
+          min="0.01"
+          max="0.25"
+          step="0.01"
+          thumb-label="always"
+        ></v-slider>
+      </v-col>
+    </v-row>
     <v-row justify="center" align="center">
       <v-col cols="auto" class="pa-0 ma-0">
         <v-card elevation="12" class="mt-3" ref="canvasCard">
@@ -23,10 +34,14 @@ export default {
     previewImage: null,
     konvasImage: null,
     tokenImageLoaded: true,
+    tokenScale: 0.25,
   }),
   computed: {
     width() {
       return this.$store.state.width;
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.name == "xs";
     },
   },
   mounted() {
@@ -34,18 +49,23 @@ export default {
       // this.insertToken("/monster1.jpg", 50, 100);
       this.insertToken("/monster2.png", 200, 100);
       this.insertBackground("/background.png", 0, 0);
-      if (this.$vuetify.breakpoint.name == "xs") {
+      if (this.mobile) {
         this.$store.commit("setDimensions", {
           width: window.innerWidth,
-          height: window.innerHeight,
+          height: window.innerHeight - 56,
         });
       } else {
         this.$store.commit("setDimensions", {
           width: window.innerWidth - 100,
-          height: window.innerHeight - 150,
+          height: window.innerHeight - 250,
         });
       }
     });
+  },
+  watch: {
+    tokenScale(newScale) {
+      this.$store.commit("changeTokenScale", newScale);
+    },
   },
   methods: {
     insertToken(url, x, y) {
@@ -53,15 +73,18 @@ export default {
       konvasImage.src = url;
       konvasImage.onload = () => {
         this.konvasImage = konvasImage;
+        let width = this.tokenScale * this.width;
         let newToken = {
           data: {
             config: {
               image: this.konvasImage,
               x: x,
               y: y,
-              width: 30,
-              height: 30,
+              width: width,
+              height: width,
             },
+            defaultWidth: width,
+            defaultHeight: width,
             rounded: true,
           },
         };
@@ -73,6 +96,7 @@ export default {
       konvasImage.src = url;
       konvasImage.onload = () => {
         this.konvasImage = konvasImage;
+
         let newBackground = {
           data: {
             config: {
@@ -82,7 +106,6 @@ export default {
               width: this.width,
               height: (konvasImage.height / konvasImage.width) * this.width,
             },
-            rounded: true,
           },
         };
         this.$store.commit("addBackground", newBackground);
