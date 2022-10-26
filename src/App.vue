@@ -17,6 +17,12 @@
                     <div class="mx-4">{{ rounded ? "rounded" : "squared" }}</div>
                     <label class="w-full hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filetoken">Add token</label>
                 </div>
+                <div class="flex flex-col">
+                    <div class="mb-2">
+                        Token size: <span> </span><span class="text-primary font-bold"> {{ tokenWidth }} px</span>
+                    </div>
+                    <input type="range" min="20" max="200" class="range range-xs" step="20" v-model="tokenWidth" />
+                </div>
             </div>
         </div>
     </div>
@@ -25,7 +31,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Battlemap from "./components/Battlemap.vue";
-import { bgConfig, width, height, tokens } from "./store";
+import { bgConfig, width, height, tokens, tokenWidth } from "./store";
 
 const rounded = ref(true);
 
@@ -52,25 +58,25 @@ const uploadBg = (e) => {
     };
 };
 
-const uploadToken = (e) => {
-    const previewImage = e.target.files[0];
+const uploadToken = (event) => {
+    const previewImage = event.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(previewImage);
     reader.onload = (e) => {
         if (e.target) {
             let src: any = e.target.result;
-            // this.previewImageSrc = src;
             const konvasImage = new window.Image();
             konvasImage.src = src;
             konvasImage.onload = () => {
+                let ratio = konvasImage.height / konvasImage.width;
                 let newToken = {
                     data: {
                         config: {
                             image: konvasImage,
                             x: 150,
                             y: 150,
-                            width: 100,
-                            height: 100,
+                            width: Number(tokenWidth.value),
+                            height: Number(tokenWidth.value * ratio),
                         },
                         rounded: rounded.value,
                         draggable: true,
@@ -79,6 +85,7 @@ const uploadToken = (e) => {
                 tokens.value.push(newToken);
             };
         }
+        event.target.value = "";
     };
 };
 </script>

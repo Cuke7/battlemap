@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref, computed } from "vue"
 
 interface Token {
     data: {
@@ -18,3 +18,5 @@ export const bgConfig = ref<any>(null);
 export const width = ref(0)
 export const height = ref(0)
 export const tokens = ref<Token[]>([])
+export const tokenWidth = ref(100);
+
