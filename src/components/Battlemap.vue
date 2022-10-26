@@ -10,14 +10,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { bgConfig } from "../store";
+import { bgConfig, width, height } from "../store";
 
-const width = computed(() => {
-    return parent.value?.getBoundingClientRect().width;
-});
-const height = computed(() => {
-    return parent.value?.getBoundingClientRect().height;
-});
 const stage = ref(null);
 const parent = ref<HTMLDivElement | null>(null);
 
@@ -30,7 +24,11 @@ const configKonva = computed(() => {
 });
 
 onMounted(() => {
-    insertBackground("background.png", 0, 0);
+    if (parent.value?.getBoundingClientRect()) {
+        width.value = parent.value.getBoundingClientRect().width;
+        height.value = parent.value.getBoundingClientRect().height;
+        insertBackground("background.png", 0, 0);
+    }
 });
 
 const insertBackground = (url: string, x: number, y: number) => {
@@ -41,8 +39,8 @@ const insertBackground = (url: string, x: number, y: number) => {
             image: konvasImage,
             x: x,
             y: y,
-            width: konvasImage.width > konvasImage.height ? width.value : (konvasImage.width / konvasImage.height) * Number(parent.value?.getBoundingClientRect().height),
-            height: konvasImage.width <= konvasImage.height ? height.value : (konvasImage.height / konvasImage.width) * Number(parent.value?.getBoundingClientRect().width),
+            width: konvasImage.width > konvasImage.height ? width.value : (konvasImage.width / konvasImage.height) * height.value,
+            height: konvasImage.width <= konvasImage.height ? height.value : (konvasImage.height / konvasImage.width) * width.value,
         };
     };
 };
