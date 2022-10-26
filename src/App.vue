@@ -11,16 +11,23 @@
                 <input type="file" accept="image" @change="uploadBg" id="filebg" hidden />
                 <label class="hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filebg">Change background</label>
                 <!-- TOKENS -->
-                <input type="file" accept="image" @change="uploadToken" id="filetoken" hidden />
-                <label class="hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filetoken">Add token</label>
+                <div class="flex items-center">
+                    <input type="file" accept="image" @change="uploadToken" id="filetoken" hidden />
+                    <input type="checkbox" class="toggle" v-model="rounded" />
+                    <div class="mx-4">{{ rounded ? "rounded" : "squared" }}</div>
+                    <label class="w-full hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filetoken">Add token</label>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import Battlemap from "./components/Battlemap.vue";
 import { bgConfig, width, height, tokens } from "./store";
+
+const rounded = ref(true);
 
 const uploadBg = (e) => {
     const previewImage = e.target.files[0];
@@ -65,7 +72,7 @@ const uploadToken = (e) => {
                             width: 100,
                             height: 100,
                         },
-                        rounded: true,
+                        rounded: rounded.value,
                         draggable: true,
                     },
                 };
