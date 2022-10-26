@@ -3,6 +3,7 @@
         <v-stage ref="stage" :config="configKonva">
             <v-layer ref="layer">
                 <v-image :config="bgConfig" />
+                <Token v-for="token in tokens" :data="token.data" />
             </v-layer>
         </v-stage>
     </div>
@@ -10,7 +11,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { bgConfig, width, height } from "../store";
+import { bgConfig, width, height, tokens } from "../store";
+import Token from "./Token.vue";
 
 const stage = ref(null);
 const parent = ref<HTMLDivElement | null>(null);
