@@ -71,8 +71,8 @@ const uploadToken = (event) => {
                     data: {
                         config: {
                             image: konvasImage,
-                            x: 150,
-                            y: 150,
+                            x: width.value / 2,
+                            y: height.value / 2,
                             width: 150,
                             height: 150 * ratio,
                         },
