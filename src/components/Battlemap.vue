@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full bg-base-300 rounded-xl" ref="parent">
-        <v-stage ref="stage" :config="configKonva">
+        <v-stage ref="stageEl" :config="configKonva" @wheel="wheel">
             <v-layer ref="layer">
                 <v-image :config="bgConfig" />
                 <Token v-for="token in tokens" :data="token.data" />
@@ -14,7 +14,6 @@ import { ref, onMounted, computed } from "vue";
 import { bgConfig, width, height, tokens } from "../store";
 import Token from "./Token.vue";
 
-const stage = ref(null);
 const parent = ref<HTMLDivElement | null>(null);
 
 const configKonva = computed(() => {
@@ -45,5 +44,32 @@ const insertBackground = (url: string, x: number, y: number) => {
             height: konvasImage.width <= konvasImage.height ? height.value : (konvasImage.height / konvasImage.width) * width.value,
         };
     };
+};
+
+const scaleBy = ref(1.1);
+const stageEl = ref(null);
+const wheel = (e) => {
+    if (stageEl.value) {
+        let stage = stageEl.value.getStage();
+        e.evt.preventDefault();
+        var oldScale = stage.scaleX();
+
+        var pointer = stage.getPointerPosition();
+
+        var mousePointTo = {
+            x: (pointer.x - stage.x()) / oldScale,
+            y: (pointer.y - stage.y()) / oldScale,
+        };
+
+        var newScale = e.evt.deltaY < 0 ? oldScale * scaleBy.value : oldScale / scaleBy.value;
+
+        stage.scale({ x: newScale, y: newScale });
+
+        var newPos = {
+            x: pointer.x - mousePointTo.x * newScale,
+            y: pointer.y - mousePointTo.y * newScale,
+        };
+        stage.position(newPos);
+    }
 };
 </script>
