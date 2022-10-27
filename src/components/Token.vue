@@ -13,7 +13,7 @@ const data = props.data;
 const groupConfigRounded = computed(() => {
     return {
         clipFunc: (ctx) => {
-            ctx.arc(data.config.x + data.config.width / 2, data.config.y + data.config.height / 2, data.config.width < data.config.height ? data.config.width / 2 : data.config.height / 2, 0, Math.PI * 2, true);
+            ctx.arc(data.config.x + (data.config.width * data.config.scale.x) / 2, data.config.y + (data.config.height * data.config.scale.y) / 2, data.config.width * data.config.scale.x < data.config.height * data.config.scale.y ? (data.config.width * data.config.scale.x) / 2 : (data.config.height * data.config.scale.y) / 2, 0, Math.PI * 2, true);
         },
         draggable: data.draggable,
     };

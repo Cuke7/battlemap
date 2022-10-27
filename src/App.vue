@@ -18,10 +18,8 @@
                     <label class="w-full hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filetoken">Add token</label>
                 </div>
                 <div class="flex flex-col">
-                    <div class="mb-2">
-                        Token size: <span> </span><span class="text-primary font-bold"> {{ tokenWidth }} px</span>
-                    </div>
-                    <input type="range" min="20" max="200" class="range range-xs" step="20" v-model="tokenWidth" />
+                    <div class="mb-2">Token scaling factor</div>
+                    <input type="range" min="0.1" max="3" class="range range-xs" step="0.1" v-model="tokenWidth" />
                 </div>
             </div>
         </div>
@@ -29,9 +27,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Battlemap from "./components/Battlemap.vue";
-import { bgConfig, width, height, tokens, tokenWidth } from "./store";
+import { bgConfig, width, height, tokenWidth, tokensConfig } from "./store";
 
 const rounded = ref(true);
 
@@ -75,14 +73,16 @@ const uploadToken = (event) => {
                             image: konvasImage,
                             x: 150,
                             y: 150,
-                            width: Number(tokenWidth.value),
-                            height: Number(tokenWidth.value * ratio),
+                            width: 150,
+                            height: 150 * ratio,
                         },
+                        ratio,
                         rounded: rounded.value,
                         draggable: true,
                     },
                 };
-                tokens.value.push(newToken);
+
+                tokensConfig.value.push(newToken);
             };
         }
         event.target.value = "";

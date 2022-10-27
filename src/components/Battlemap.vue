@@ -3,7 +3,7 @@
         <v-stage ref="stageEl" :config="configKonva" @wheel="wheel">
             <v-layer ref="layer">
                 <v-image :config="bgConfig" />
-                <Token v-for="token in tokens" :data="token.data" />
+                <Token v-for="token in tokens2" :data="token.data" />
             </v-layer>
         </v-stage>
     </div>
@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { bgConfig, width, height, tokens } from "../store";
+import { bgConfig, width, height, tokens2 } from "../store";
 import Token from "./Token.vue";
 
 const parent = ref<HTMLDivElement | null>(null);
@@ -47,7 +47,7 @@ const insertBackground = (url: string, x: number, y: number) => {
 };
 
 const scaleBy = ref(1.1);
-const stageEl = ref(null);
+const stageEl = ref<any>(null);
 const wheel = (e) => {
     if (stageEl.value) {
         let stage = stageEl.value.getStage();
