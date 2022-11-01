@@ -8,18 +8,24 @@
             <label for="my-drawer-2" class="drawer-overlay"></label>
             <div class="p-8 overflow-y-auto w-[400px] bg-base-300 text-base-content space-y-8">
                 <!-- BG -->
-                <input type="file" accept="image" @change="uploadBg" id="filebg" hidden />
-                <label class="hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filebg">Change background</label>
-                <!-- TOKENS -->
-                <div class="flex items-center">
-                    <input type="file" accept="image" @change="uploadToken" id="filetoken" hidden />
-                    <input type="checkbox" class="toggle" v-model="rounded" />
-                    <div class="mx-4">{{ rounded ? "rounded" : "squared" }}</div>
-                    <label class="w-full hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filetoken">Add token</label>
+                <div class="border-2 border-primary p-8 rounded-lg">
+                    <div class="font-mono text-4xl text-secondary justify-center flex mb-8">Background</div>
+                    <input type="file" accept="image" @change="uploadBg" id="filebg" hidden />
+                    <label class="hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filebg">Change background</label>
                 </div>
-                <div class="flex flex-col">
-                    <div class="mb-2">Token scaling factor</div>
-                    <input type="range" min="0.1" max="3" class="range range-xs" step="0.1" v-model="tokenWidth" />
+                <!-- TOKENS -->
+                <div class="border-2 border-primary p-8 rounded-lg">
+                    <div class="font-mono text-4xl text-secondary justify-center flex">Tokens</div>
+                    <div class="flex flex-col my-8">
+                        <div class="mb-2">Token scaling factor</div>
+                        <input type="range" min="0.1" max="3" class="range range-xs range-primary" step="0.1" v-model="tokenWidth" />
+                    </div>
+                    <div class="flex items-center">
+                        <input type="file" accept="image" @change="uploadToken" id="filetoken" hidden />
+                        <input type="checkbox" class="toggle" v-model="rounded" />
+                        <div class="mx-4">{{ rounded ? "rounded" : "squared" }}</div>
+                        <label class="w-full hover:bg-secondary-focus border-2 border-secondary-focus rounded-lg font-mono p-2 text-lg flex justify-center cursor-pointer" for="filetoken">Add token</label>
+                    </div>
                 </div>
             </div>
         </div>
